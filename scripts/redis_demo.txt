@@ -1,0 +1,8 @@
+# Executar interativamente: docker compose exec redis redis-cli
+PING
+GET etheria:v1:version:batalhas
+SCAN 0 MATCH etheria:v1:* COUNT 100
+# Se versão=0 e o ranking já tiver sido acessado:
+TTL etheria:v1:defesas:gerais:v1:v0
+GET etheria:v1:defesas:gerais:v1:v0
+# Não execute FLUSHDB em ambientes com dados reais.

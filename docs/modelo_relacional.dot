@@ -1,0 +1,21 @@
+digraph ER {
+  graph [rankdir=LR, bgcolor="white", fontname="DejaVu Sans", pad=.32, nodesep=.45, ranksep=.80, splines=polyline];
+  node [shape=record, style="rounded,filled", color="#BCD2E1", fillcolor="#F1F7FC", fontname="DejaVu Sans", fontsize=11, margin=".13,.08"];
+  edge [color="#3286BB", penwidth=1.2, arrowsize=.7, fontname="DejaVu Sans", fontsize=9];
+  guilda [label="{GUILDA|PK id_guilda\lcodigo (UNIQUE)\lnome (UNIQUE)\l}"];
+  jogador [label="{JOGADOR|PK id_jogador\lnickname (UNIQUE)\l}"];
+  membro [label="{MEMBRO_GUILDA|PK id_membro\lFK id_guilda\lFK id_jogador\lcargo / avatar\l}",fillcolor="#E0F1FF"];
+  batalha [label="{BATALHA|PK id_batalha\lcodigo (UNIQUE)\ldata_batalha\lresultado\lFK id_atacante\lFK id_defensor\l}",fillcolor="#E1F5EE"];
+  comp [label="{COMPOSICAO_BATALHA|PK id_composicao\lFK id_batalha\llado + slot (UNIQUE composto)\lFK id_heroi\lFK id_carta\lFK id_pet\l}",fillcolor="#E0F1FF"];
+  heroi [label="{HEROI|PK id_heroi\lnome (UNIQUE)\l}"];
+  carta [label="{CARTA|PK id_carta\lnome (UNIQUE)\l}"];
+  pet [label="{PET|PK id_pet\lnome (UNIQUE)\l}"];
+  guilda -> membro [label="1:N"];
+  jogador -> membro [label="1:N"];
+  jogador -> batalha [label="atacante 1:N"];
+  jogador -> batalha [label="defensor 1:N"];
+  batalha -> comp [label="1:6"];
+  heroi -> comp [label="1:N"];
+  carta -> comp [label="1:N"];
+  pet -> comp [label="1:N"];
+}

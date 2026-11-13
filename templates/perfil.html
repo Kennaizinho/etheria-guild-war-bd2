@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil do Membro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/PersonagensHeadIcon/NicoNana.png') }}" type="image/png">
+</head>
+<body>
+    <!-- GRUPO DE BOTÕES NO TOPO -->
+    <div class="top-actions">
+        <a href="https://ko-fi.com/kennai" target="_blank" class="btn-coffee">
+            ☕ <span data-i18n="btn-coffee">Pagar um café</span>
+        </a>
+        <button class="btn-lang" id="btn-lang" onclick="toggleLanguage()">🇺🇸 EN</button>
+    </div>
+    <div class="dashboard-container">
+        <a href="/" class="btn-voltar" data-i18n="voltar">← Voltar para Guildas</a>
+        <div class="profile-header">
+            <img src="" alt="Avatar" class="icone" id="icone-jogador" loading="lazy" decoding="async">
+            <div class="info-jogador">
+                <h1 id="nick-jogador">
+                    ... <span id="icone-cargo"></span>
+                </h1>
+                <div class="badge-container">
+                    <span class="badge badge-guilda">🛡️ <span id="guilda-jogador"></span></span>
+                    <span class="badge">⚔️ Winrate: <span id="winrate-jogador" style="color: #fff; margin-left: 4px;"></span></span>
+                    <span class="badge" id="tag-cargo" style="display:none;"></span>
+                </div>
+            </div>
+        </div>
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="mudarAba('ataques-recentes', this)" data-i18n="ataques-recentes">Ataques recentes</button>
+            <button class="tab-btn" onclick="mudarAba('comps-fav', this)" data-i18n="comps-fav">Composições favoritas</button>
+            <button class="tab-btn" onclick="mudarAba('time-mais-enfrentado', this)" data-i18n="time-mais-enfrentado">Time mais enfrentado</button>
+            <button class="tab-btn" onclick="mudarAba('comps-dificeis', this)" data-i18n="comps-dificeis">Composições mais difíceis</button>
+            <button class="tab-btn" onclick="mudarAba('def-melhor', this)" data-i18n="def-melhor">Defesa com melhor desempenho</button>
+        </div>
+        <div id="area-conteudo"></div>
+    </div>
+    <script>window.ETHERIA_PREFER_WEBP = {{ 'true' if preferir_webp else 'false' }};</script>
+    <script src="{{ url_for('static', filename='js/perfil.js', v='20261025b') }}"></script>
+</body>
+</html>

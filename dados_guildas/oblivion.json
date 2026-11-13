@@ -1,0 +1,10 @@
+{
+  "id_guilda": "g_oblivion",
+  "nome_guilda": "OBLIVION",
+  "membros": [
+    { "id": "o_01", "nickname": "Luke", "cargo": "lider", "avatar": "Heinrich" },
+    { "id": "o_02", "nickname": "Sunny", "cargo": "vice", "avatar": "Dorothy" },
+    { "id": "o_03", "nickname": "Anelahk", "cargo": "membro", "avatar": "Sybil" },
+    { "id": "o_04", "nickname": "CrowLeyZz", "cargo": "membro", "avatar": "Massiah" }
+  ]
+}

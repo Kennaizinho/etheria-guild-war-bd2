@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Etheria Restart GuildWar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='20261025c') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/PersonagensHeadIcon/NicoNana.png') }}" type="image/png">
+</head>
+<body>
+    <div class="top-actions">
+        <a href="https://ko-fi.com/kennai" target="_blank" class="btn-coffee">
+            ☕ <span data-i18n="btn-coffee">Pagar um café</span>
+        </a>
+        <button class="btn-lang" id="btn-lang" onclick="toggleLanguage()">🇺🇸 EN</button>
+    </div>
+    <div class="container" id="main-container">
+        <h1 id="titulo-guilda"></h1>
+        <p class="header-subtitle" id="sub-texto" data-i18n="sub-texto-guilda">Ferramentas de Guilda e Análise</p>
+        <div class="botoes-topo">
+            <button class="btn-acao" id="btn-guildas" onclick="abrirView('view-guildas', this)" data-i18n="btn-guildas">Membros da Guilda</button>
+            <button class="btn-acao" id="btn-defesas" onclick="abrirView('view-defesas', this)" data-i18n="btn-defesas">🛡️ Defesas Globais</button>
+            <button class="btn-acao" id="btn-enfrentar" onclick="abrirView('view-enfrentar', this)" data-i18n="btn-enfrentar">⚔️ Enfrentar Defesa</button>
+            <button class="btn-acao" id="btn-calendario" onclick="abrirView('view-calendario', this)" data-i18n="btn-calendario">📅 Calendário</button>
+        </div>
+        <div id="view-guildas" class="view-section active">
+            <div class="guild-grid">
+                <button class="guild-card" onclick="carregarGuilda('jantus', this)">Jantus</button>
+                <button class="guild-card" onclick="carregarGuilda('oblivion', this)">Oblivion</button>
+            </div>
+            <div id="area-membros" style="display: none; margin-top:20px; border-top:1px solid var(--border); padding-top:20px;">
+                <label class="label-select" id="label-membro"></label>
+                <select id="select-membro" onchange="abrirPerfilMembro()">
+                    <option value="" data-i18n="selecione-membro">-- Selecione o membro --</option>
+                </select>
+            </div>
+        </div>
+        <div id="view-defesas" class="view-section">
+            <h3 style="font-size: 18px; color: var(--text-primary); margin: 0 0 15px 0;" data-i18n="ranking-title">Ranking Global de Defesas</h3>
+            <div id="lista-defesas-conteudo" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+        <div id="view-enfrentar" class="view-section">
+            <p style="color: var(--text-secondary); font-size: 13px; text-align: center; margin-bottom: 20px;" data-i18n="construtor-desc">
+                Monte a defesa inimiga para descobrir os melhores times para atacá-la.
+            </p>
+            <div class="construtor-container">
+                <div class="lado-esquerdo" id="area-slots"></div>
+                <div class="lado-direito" id="area-sugestoes">
+                    <div style="text-align: center; color: var(--border-light); margin-top: 50px;">
+                        <span style="font-size: 40px; display: block; margin-bottom: 10px;">🛡️</span>
+                        <span data-i18n="construtor-placeholder">Preencha os 3 personagens ao lado para ver sugestões de ataque.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="view-calendario" class="view-section">
+            <div class="cg-wrap">
+                <div class="cg-inner">
+                    <div class="cg-today-line" id="cg-today-line" aria-hidden="true">
+                        <div class="cg-today-dot"></div>
+                        <div class="cg-today-label" id="cg-today-label"></div>
+                    </div>
+                    <div class="cg-row">
+                        <div class="cg-sidebar">Phase</div>
+                        <div class="cg-phase ph-red" style="grid-column: 2 / span 21;" data-i18n-title="c_ph1">
+                            <div class="cg-phase-title">SS6.1</div>
+                        </div>
+                        <div class="cg-phase ph-purple" style="grid-column: 23 / span 21;" data-i18n-title="c_ph2">
+                            <div class="cg-phase-title">SS6.2</div>
+                        </div>
+                        <div class="cg-phase ph-blue" style="grid-column: 44 / span 21;" data-i18n-title="c_ph3">
+                            <div class="cg-phase-title">SS6.3</div>
+                        </div>
+                        <div class="cg-phase ph-dark-purple" style="grid-column: 65 / span 28;" data-i18n-title="c_ph4">
+                            <div class="cg-phase-title">SS6.4</div>
+                        </div>
+                    </div>
+                    <div class="cg-row cg-row-dim">
+                        <div class="cg-sidebar cg-sidebar-dim">Week</div>
+                        <div class="cg-cell" style="grid-column: 2 / span 7;"><span class="week-pill">2-Sep</span></div>
+                        <div class="cg-cell" style="grid-column: 9 / span 7;"><span class="week-pill">9-Sep</span></div>
+                        <div class="cg-cell" style="grid-column: 16 / span 7;"><span class="week-pill">16-Sep</span></div>
+                        <div class="cg-cell" style="grid-column: 23 / span 7;"><span class="week-pill">23-Sep</span></div>
+                        <div class="cg-cell" style="grid-column: 30 / span 7;"><span class="week-pill">30-Sep</span></div>
+                        <div class="cg-cell" style="grid-column: 37 / span 7;"><span class="week-pill">7-Oct</span></div>
+                        <div class="cg-cell" style="grid-column: 44 / span 7;"><span class="week-pill">14-Oct</span></div>
+                        <div class="cg-cell" style="grid-column: 51 / span 7;"><span class="week-pill">21-Oct</span></div>
+                        <div class="cg-cell" style="grid-column: 58 / span 7;"><span class="week-pill">28-Oct</span></div>
+                        <div class="cg-cell" style="grid-column: 65 / span 7;"><span class="week-pill">4-Nov</span></div>
+                        <div class="cg-cell" style="grid-column: 72 / span 7;"><span class="week-pill">11-Nov</span></div>
+                        <div class="cg-cell" style="grid-column: 79 / span 7;"><span class="week-pill">18-Nov</span></div>
+                        <div class="cg-cell" style="grid-column: 86 / span 7;"><span class="week-pill">25-Nov</span></div>
+                    </div>
+                    <div class="cg-row cg-row-dim">
+                        <div class="cg-sidebar cg-sidebar-dim" style="grid-area: 1 / 1;">Timeline</div>
+                        <div class="cg-tl-item" style="grid-area: 1 / 2 / auto / span 46;" data-i18n-title="c_tl1">
+                            <span style="color: var(--accent);">SS6 Season Begins</span><span style="color: var(--text-secondary); margin-left: 4px;">›››</span>
+                        </div>
+                        <div class="cg-tl-item justify-end pr-1" style="grid-area: 1 / 55 / auto / 62;">
+                        </div>
+                        <div class="cg-tl-item justify-start" style="grid-area: 1 / 62 / auto / 74;" data-i18n-title="c_tl3">
+                            <span style="color: var(--text-secondary);">||</span><span class="truncate" style="color: var(--accent);">S6 RTA Season Ends</span>
+                        </div>
+                        <div class="cg-tl-item justify-end" style="grid-area: 1 / 79 / auto / 93;" data-i18n-title="c_tl4">
+                            <span class="truncate" style="color: rgb(56, 189, 248);">HYPA RTA (Off-Season)</span><span style="color: var(--text-secondary);">||</span>
+                        </div>
+                    </div>
+                    <div class="cg-row" style="grid-template-rows: 42px 24px;">
+                        <div class="cg-sidebar" style="grid-area: 1 / 1 / span 2;">Banners</div>
+                        <div class="cg-ev ev-red" style="grid-area: 1 / 2 / auto / span 21;" data-i18n-title="c_bn1">Jolt (Kinetic)</div>
+                        <div class="cg-ev ev-red" style="grid-area: 2 / 2 / auto / span 14; font-size: 8.5px;" data-i18n-title="c_bn2">Diting's Animetry: Awaken Begins</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 1 / 23 / auto / span 21;" data-i18n-title="c_bn3">Kynessa (Apex)</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 1 / 44 / auto / span 21;" data-i18n-title="c_bn4">Syen (Anima) &amp; Auroral Nell (SR)</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 1 / 65 / auto / span 28;" data-i18n-title="c_bn5">Thalos (Apex)</div>
+                    </div>
+                    <div class="cg-row" style="grid-template-rows: repeat(4, 42px);">
+                        <div class="cg-sidebar" style="grid-area: 1 / 1 / span 4;">Featured Events</div>
+                        <div class="cg-ev ev-global" style="grid-area: 1 / 2 / auto / span 42; display: flex; justify-content: space-between; align-items: center; padding: 0 12px; position: relative;" data-i18n-title="c_evg">
+                            <div style="font-size: 8.5px; line-height: 1.05; text-align: left; z-index: 2;">
+                                <strong>Chrysus Codex (Crystal Pool)</strong><br><span style="opacity: 0.9;">Pyrite Plunder</span>
+                            </div>
+                            <div style="font-size: 10.5px; font-weight: bold; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 2;">
+                                Global Launch Anniversary
+                            </div>
+                            <div style="font-size: 8.5px; line-height: 1.05; text-align: right; z-index: 2;">
+                                <strong>Anniversary Celebration Card</strong><br><span style="opacity: 0.9;">More Events to Come</span>
+                            </div>
+                        </div>
+                        <div class="cg-ev ev-red" style="grid-area: 2 / 2 / auto / span 14;" data-i18n-title="c_evn">New Season Celebration</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 2 / 23 / auto / span 14;" data-i18n-title="c_evs">Sirius Ascendant</div>
+                        <div class="cg-ev ev-red" style="grid-area: 3 / 2 / auto / span 7;" data-i18n-title="c_evb1">Blessings Galore</div>
+                        <div class="cg-ev ev-red" style="grid-area: 3 / 9 / auto / span 7;" data-i18n-title="c_eva">Apex Animus Selection</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 3 / 23 / auto / span 7;" data-i18n-title="c_evb2">Blessings Galore</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 3 / 30 / auto / span 7;" data-i18n-title="c_evw1">Wishbinder Gift</div>
+                        <div class="cg-ev ev-red" style="grid-area: 4 / 2 / auto / span 14;" data-i18n-title="c_evh">The Heuristic Pit</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 4 / 23 / auto / span 14;" data-i18n-title="c_evab">Abyss Challenge</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 1 / 51 / auto / span 14;" data-i18n-title="c_evsp">Spooktheria</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 2 / 53 / auto / span 3; font-size: 8.5px;" data-i18n-title="c_evb3">Blessings Galore</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 1 / 65 / auto / span 28;" data-i18n-title="c_evhp">HYPA Season</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 2 / 72 / auto / span 7;" data-i18n-title="c_evw2">Wishbinder Gift</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 3 / 74 / auto / span 3; font-size: 8.5px;" data-i18n-title="c_evb4">Blessings Galore</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 2 / 86 / auto / span 7;" data-i18n-title="c_evpr">New Season Pre-Registration</div>
+                    </div>
+                    <div class="cg-row" style="grid-template-rows: repeat(4, 42px);">
+                        <div class="cg-sidebar" style="grid-area: 1 / 1 / span 4;">Limited Time</div>
+                        <div class="cg-ev ev-red" style="grid-area: 1 / 2 / auto / span 7;" data-i18n-title="lt_1">Season Theme Puzzle</div>
+                        <div class="cg-ev ev-red" style="grid-area: 2 / 2 / auto / span 7;" data-i18n-title="lt_2">Fortune Piggy</div>
+                        <div class="cg-ev ev-red" style="grid-area: 3 / 2 / auto / span 7;" data-i18n-title="lt_3">Shell Story</div>
+                        <div class="cg-ev ev-red" style="grid-area: 4 / 2 / auto / span 7;" data-i18n-title="lt_4">Infinity Train</div>
+                        <div class="cg-ev ev-red" style="grid-area: 1 / 9 / auto / span 7;" data-i18n-title="lt_5">Chaku Treasure Hunt</div>
+                        <div class="cg-ev ev-red" style="grid-area: 2 / 9 / auto / span 7;" data-i18n-title="lt_6">Cyber Shadows</div>
+                        <div class="cg-ev ev-red" style="grid-area: 3 / 9 / auto / span 7;" data-i18n-title="lt_7">Cage Rumble</div>
+                        <div class="cg-ev ev-red" style="grid-area: 1 / 16 / auto / span 7;" data-i18n-title="lt_8">Dazzler Pulse</div>
+                        <div class="cg-ev ev-red" style="grid-area: 2 / 16 / auto / span 7;" data-i18n-title="lt_9">Champion's Call</div>
+                        <div class="cg-ev ev-red" style="grid-area: 3 / 16 / auto / span 7;" data-i18n-title="lt_10">Hyper Colosseum (Random...)</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 1 / 23 / auto / span 7;" data-i18n-title="lt_11">Candy Party</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 2 / 23 / auto / span 7;" data-i18n-title="lt_12">Modules Recycle Protocol</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 3 / 23 / auto / span 7;" data-i18n-title="lt_3">Shell Story</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 1 / 30 / auto / span 7;" data-i18n-title="lt_13">Miracle Wish Tree</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 2 / 30 / auto / span 7;" data-i18n-title="lt_14">Cubic Game</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 3 / 30 / auto / span 7;" data-i18n-title="lt_6">Cyber Shadows</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 1 / 37 / auto / span 7;" data-i18n-title="lt_8">Dazzler Pulse</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 2 / 37 / auto / span 7;" data-i18n-title="lt_9">Champion's Call</div>
+                        <div class="cg-ev ev-purple" style="grid-area: 3 / 37 / auto / span 7;" data-i18n-title="lt_15">Hyper Colosseum (Affinity...)</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 1 / 44 / auto / span 7;" data-i18n-title="lt_11">Candy Party</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 2 / 44 / auto / span 7;" data-i18n-title="lt_12">Modules Recycle Protocol</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 3 / 44 / auto / span 7;" data-i18n-title="lt_3">Shell Story</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 1 / 51 / auto / span 7;" data-i18n-title="lt_2">Fortune Piggy</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 2 / 51 / auto / span 7;" data-i18n-title="lt_6">Cyber Shadows</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 3 / 51 / auto / span 7;" data-i18n-title="lt_4">Infinity Train</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 1 / 58 / auto / span 7;" data-i18n-title="lt_8">Dazzler Pulse</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 2 / 58 / auto / span 7;" data-i18n-title="lt_9">Champion's Call</div>
+                        <div class="cg-ev ev-blue" style="grid-area: 3 / 58 / auto / span 7;" data-i18n-title="lt_7">Cage Rumble</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 1 / 65 / auto / span 7;" data-i18n-title="lt_11">Candy Party</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 2 / 65 / auto / span 7;" data-i18n-title="lt_12">Modules Recycle Protocol</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 3 / 65 / auto / span 7;" data-i18n-title="lt_3">Shell Story</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 4 / 65 / auto / span 7;" data-i18n-title="lt_14">Cubic Game</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 1 / 72 / auto / span 7;" data-i18n-title="lt_13">Miracle Wish Tree</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 2 / 72 / auto / span 7;" data-i18n-title="lt_6">Cyber Shadows</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 3 / 72 / auto / span 7;" data-i18n-title="lt_16">Dreamscape</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 1 / 79 / auto / span 7;" data-i18n-title="lt_8">Dazzler Pulse</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 2 / 79 / auto / span 7;" data-i18n-title="lt_9">Champion's Call</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 3 / 79 / auto / span 7;" data-i18n-title="lt_4">Infinity Train</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 1 / 86 / auto / span 7;" data-i18n-title="lt_6">Cyber Shadows</div>
+                        <div class="cg-ev ev-dark-purple" style="grid-area: 2 / 86 / auto / span 7;" data-i18n-title="lt_14">Cubic Game</div>
+                    </div>
+                    <div class="cg-row" style="grid-template-rows: 42px;">
+                        <div class="cg-sidebar" style="grid-area: 1 / 1;">Union</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 2 / auto / span 7;" data-i18n-title="un_1">EUC Announcement</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 9 / auto / span 7;" data-i18n-title="un_2">EUC Groups</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 16 / auto / span 7;" data-i18n-title="un_3">EUC Qualifiers</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 23 / auto / span 7;" data-i18n-title="un_4">EUC Finals</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 44 / auto / span 7;" data-i18n-title="un_5">GVE: Ruin Hegemony</div>
+                    </div>
+                    <div class="cg-row" style="grid-template-rows: 42px;">
+                        <div class="cg-sidebar" style="grid-area: 1 / 1;">Ethernet Rally</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 2 / auto / span 8;" data-i18n-title="er_1">SS5 Phase IV</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 10 / auto / span 21;" data-i18n-title="er_2">SS6 Phase I</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 31 / auto / span 21;" data-i18n-title="er_3">SS6 Phase II</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 52 / auto / span 21;" data-i18n-title="er_4">SS6 Phase III</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 73 / auto / span 20;" data-i18n-title="er_5">SS6 Phase IV</div>
+                    </div>
+                    <div class="cg-row" style="grid-template-rows: 42px;">
+                        <div class="cg-sidebar" style="grid-area: 1 / 1;">Ember Trek</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 2 / auto / span 29;" data-i18n-title="et_1">Through September 30</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 31 / auto / span 31;" data-i18n-title="et_2">Oct 1 - Oct 31</div>
+                        <div class="cg-ev ev-gold" style="grid-area: 1 / 62 / auto / span 30;" data-i18n-title="et_3">Begins November 1</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="update-notice" data-i18n="update-notice">
+        ⚠️ Os dados são atualizados semanalmente. Faço a manutenção sozinho, então peço um pouco de paciência! ❤️
+    </p>
+    <div class="codes-container">
+        <h2 class="codes-title">
+            <span data-i18n="actives-codes">Códigos Ativos</span>
+            <span class="codes-credit">By: Mastemon</span>
+        </h2>
+        <div class="codes-row">
+            <div class="code-box" onclick="copiarCodigo('ETHERIAEPIC', this)"><span class="code-text">ETHERIAEPIC</span></div>
+            <div class="code-box" onclick="copiarCodigo('ETHERIASS6', this)"><span class="code-text">ETHERIASS6</span></div>
+            <div class="code-box" onclick="copiarCodigo('ETHERIADC100K', this)"><span class="code-text">ETHERIADC100K</span></div>
+            <div class="code-box" onclick="copiarCodigo('ETHERIA0902', this)"><span class="code-text">ETHERIA0902</span></div>
+            <div class="code-box" onclick="copiarCodigo('ETHERIAJOLT', this)"><span class="code-text">ETHERIAJOLT</span></div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="modal-selecao">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-titulo">Selecionar</h2>
+                <button class="btn-fechar-modal" onclick="fecharModal()">×</button>
+            </div>
+            <div class="grid-selecao" id="modal-grid"></div>
+        </div>
+    </div>
+    <script>window.ETHERIA_PREFER_WEBP = {{ 'true' if preferir_webp else 'false' }};</script>
+    <script src="{{ url_for('static', filename='js/index.js', v='20261025c') }}"></script>
+</body>
+</html>

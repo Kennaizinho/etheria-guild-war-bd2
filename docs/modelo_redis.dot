@@ -1,0 +1,15 @@
+digraph Redis {
+ graph [rankdir=TB,bgcolor="white",pad=.25,nodesep=.28,ranksep=.50,fontname="DejaVu Sans",splines=polyline];
+ node [shape=box,style="rounded,filled",fontname="DejaVu Sans",fontsize=11,color="#BCD2E1",fillcolor="#F1F7FC"];
+ edge [color="#3286BB",arrowsize=.7];
+ flask [label="FLASK / SERVICE LAYER",fillcolor="#DBEFFF",fontsize=15];
+ redis [label="REDIS - cache chave/valor",fillcolor="#FFEBCD",fontsize=13];
+ profile [label="perfil:{id_membro}\nJSON • TTL 300s"];
+ battle [label="batalhas:jogador:{hash}\nJSON • TTL 180s"];
+ ranking [label="defesas:gerais:v1\nJSON • TTL 120s"];
+ suggest [label="sugestao:defesa:{hash}\nJSON • TTL 300s"];
+ cats [label="entidades:estaticas:v1\nJSON • TTL 3600s"];
+ version [label="version:batalhas\nINCR após COMMIT",fillcolor="#E5F4E8"];
+ flask -> redis [label="GET / SETEX"];
+ redis -> {profile battle ranking suggest cats version};
+}
