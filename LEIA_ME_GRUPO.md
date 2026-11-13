@@ -1,7 +1,5 @@
 # Etheria Guild War — projeto para compartilhar com a equipe
 
-Esta é uma cópia do projeto de Banco de Dados II **sem a configuração de hospedagem no Discloud** (`discloud.config`).
-
 - Os códigos do frontend, Flask, serviços, PostgreSQL e Redis foram mantidos.
 - Os scripts SQL, testes, dados originais, Dockerfile e docker-compose.yml foram mantidos para atender às exigências da disciplina.
 - `requirements.txt` foi mantido porque é uma **lista de dependências Python**, não uma pasta de bibliotecas instaladas. É necessário para preparar o ambiente (inclusive o Docker).
