@@ -110,6 +110,23 @@ Benchmark Redis: apaga apenas a chave específica de defesas globais do cache, r
 
 SQLs de demonstração: `database/05_demo_queries.sql`. As credenciais de conexão são transmitidas pelas variáveis padrão do PostgreSQL (`PGHOST`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`). A variável opcional `DATABASE_URL` também é aceita fora do Compose.
 
+## Evidências observadas na equipe - 13/11/2026
+
+A equipe forneceu seis capturas de tela dos testes realizados em ambiente Docker. Os resultados foram registrados no relatório técnico e nos relatórios individuais.
+
+| Evidência | Resultado observado | Arquivo de captura (a incluir no repositório) |
+|---|---|---|
+| Integração PostgreSQL/Redis | Dois testes de integração aprovados | `docs/evidencias/01_Integracao_PostgreSQL_Redis.png` |
+| Benchmark SQL e Redis | Cerca de 13,9 ms com índices permitidos e 14,5 ms no plano sequencial alternativo; 1 `MISS` e 19 `HIT` | `docs/evidencias/02_Benchmark_SQL_Cache_Redis.png` |
+| Concorrência | Cinco gravações simultâneas: um HTTP `201` e quatro HTTP `409` | `docs/evidencias/03_Concorrencia_HTTP_201_409.png` |
+| Carga | 120 requisições com 12 clientes simultâneos; nenhum erro reportado | `docs/evidencias/04_Carga_120_Requisicoes.png` |
+| Integridade e rollback | Transação inválida rejeitada no `COMMIT`; contagem do registro igual a zero | `docs/evidencias/05_Rollback_Transacao_ACID.png` |
+| Contagem PostgreSQL | 1.970 batalhas e 11.820 posições após o cadastro de teste | `docs/evidencias/06_Contagem_Batalhas_PostgreSQL.png` |
+
+**Limitações de interpretação:** a comparação SQL força métodos de execução alternativos, não remove fisicamente os índices. `MISS` e `HIT` demonstram o funcionamento do cache, mas a invalidação após novo `COMMIT` ainda deve ser demonstrada separadamente. Os números pertencem ao ambiente de teste da equipe, não a uma certificação de produção. O requisito original de 100 mil registros continua não atendido e uma dispensa depende de autorização docente.
+
+**Capturas:** os arquivos de imagem foram fornecidos na documentação atualizada da equipe. Os caminhos acima devem ser publicados em `docs/evidencias/` para que as evidências também possam ser consultadas diretamente pelo GitHub.
+
 ## Organização
 
 - `app.py`: controllers HTTP e integração das funcionalidades;
@@ -126,4 +143,4 @@ SQLs de demonstração: `database/05_demo_queries.sql`. As credenciais de conex�
 
 ## Escopo e limites
 
-**Os 100.000 registros foram propositalmente excluídos**. O backup inicial contém 1.969 batalhas, 2 guildas e 34 membros cadastrados nas guildas. As páginas do calendário e os códigos promocionais continuam sendo dados locais no JavaScript: não são entidades do domínio transacional escolhido. As consultas de ranking e recomendação foram preservadas (agregação Python sobre dados SQL); Redis reduz recomputação em acessos repetidos. Como o ambiente de criação deste pacote não dispõe de Docker e dos serviços PostgreSQL/Redis, a inicialização integrada, os tempos de execução e os testes de concorrência **precisam ser executados no ambiente com Docker antes da entrega acadêmica**. Não são informadas latências inventadas.
+**Os 100.000 registros foram propositalmente excluídos**. O backup inicial contém 1.969 batalhas, 2 guildas e 34 membros cadastrados nas guildas. As páginas do calendário e os códigos promocionais continuam sendo dados locais no JavaScript: não são entidades do domínio transacional escolhido. As consultas de ranking e recomendação foram preservadas (agregação Python sobre dados SQL); Redis reduz recomputação em acessos repetidos. Os testes integrados, de cache, concorrência e carga foram demonstrados em seis capturas de tela produzidas pela equipe, descritas acima. As medidas são específicas desse ambiente e não foram reproduzidas independentemente nesta revisão; guarde também os logs originais.
